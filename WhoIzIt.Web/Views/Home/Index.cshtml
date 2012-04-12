@@ -1,0 +1,72 @@
+@section head {
+    <script>
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '@ViewBag.AppID', // App ID
+                channelUrl: '//localhost:@ViewBag.Port/Home/Channel', // Channel File
+                status: true, // check login status
+                cookie: true, // enable cookies to allow the server to access the session
+                xfbml: true  // parse XFBML
+            });
+
+            // Additional initialization code here
+            FB.getLoginStatus(function (response) {
+                if (response.status === 'connected') {
+                    // the user is logged in and has authenticated your
+                    // app, and response.authResponse supplies
+                    // the user's ID, a valid access token, a signed
+                    // request, and the time the access token
+                    // and signed request each expire
+                    var uid = response.authResponse.userID;
+                    var accessToken = response.authResponse.accessToken;
+                    console.log(uid);
+                    console.log(accessToken);
+
+                    $.ajax({
+                        url: "http://localhost:6821/api/friends?facebookId=" + uid + "&token=" + accessToken,
+                    }).done(function (data) {
+                        if (console && console.log) {
+                            console.log("Sample of data:", data.slice(0, 100));
+                        }
+                    });
+
+                } else if (response.status === 'not_authorized') {
+                    // the user is logged in to Facebook,
+                    // but has not authenticated your app
+                    
+                } else {
+                    // the user isn't logged in to Facebook.
+                    alert("not logged in to facebook");
+                }
+            });
+        };
+
+        // Load the SDK Asynchronously
+        (function (d) {
+            var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+            if (d.getElementById(id)) { return; }
+            js = d.createElement('script'); js.id = id; js.async = true;
+            js.src = "//connect.facebook.net/en_US/all.js";
+            ref.parentNode.insertBefore(js, ref);
+        } (document));
+    </script>
+}
+
+@section featured {
+<section class="featured">
+    <div class="content-wrapper">
+        <hgroup class="title">
+            <h1>WhoIzIt?</h1>
+            <h2>Guess who it is</h2>
+        </hgroup>
+        <p>
+            some lorem ipsum text!
+        </p>
+    </div>
+</section>
+}
+<div id="fb-root">
+  <!-- you must include this div for the JS SDK to load properly -->
+</div>
+
+<a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
