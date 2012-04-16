@@ -1,7 +1,7 @@
 @section head {
     <script>
         
-
+        var uid, accessToken;
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '@ViewBag.AppID', // App ID
@@ -19,22 +19,14 @@
                     // the user's ID, a valid access token, a signed
                     // request, and the time the access token
                     // and signed request each expire
-                    var uid = response.authResponse.userID;
-                    var accessToken = response.authResponse.accessToken;
+                    uid = response.authResponse.userID;
+                    accessToken = response.authResponse.accessToken;
                     if (console && console.log) {
                         console.log(uid);
                         console.log(accessToken);
                     }
                     $("#start").hide();
                     $("#oponent").show();
-                    $.ajax({
-                        url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
-                    }).done(function (data) {
-                        if (console && console.log) {
-                            console.log("Sample of data:", data.slice(0, 100));
-                        }
-                    });
-
                 } else if (response.status === 'not_authorized') {
                     // the user is logged in to Facebook,
                     // but has not authenticated your app
@@ -61,8 +53,18 @@
 @section startupScript{
     <script type="text/javascript">
         $(function () {
+            var viewModel = {
+                Friends: ko.observableArray([])
+            };
+
+            ko.applyBindings(viewModel);
             $("#aFriend").click(function () {
-                
+                $.ajax({
+                        url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
+                    }).done(function (data) {
+                        $("#friend-list").show();
+                        viewModel.Friends(ko.mapping.fromJS(data)());
+                    });
             });
         });
     </script>
@@ -92,5 +94,6 @@
     <a href="#_self" id="aFriend">Play with friend</a><br />
     <a href="">Play with random person</a>
 </div>
-<div id="friend-list" class="hidden">
+<div id="friend-list" class="hidden" data-bind="foreach: Friends">
+    test
 </div>
