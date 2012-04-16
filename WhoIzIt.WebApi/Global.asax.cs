@@ -4,8 +4,8 @@ using System.Linq;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
-using System.Web.Optimization;
 using System.Web.Routing;
+using Microsoft.Web.Optimization;
 
 namespace WhoIzIt.WebApi
 {
@@ -43,7 +43,7 @@ namespace WhoIzIt.WebApi
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
-            BundleTable.Bundles.RegisterTemplateBundles();
+            BundleTable.Bundles.EnableDefaultBundles();
         }
     }
 }
