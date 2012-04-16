@@ -53,7 +53,7 @@ namespace WhoIzIt.BLL.Service
         public ICollection<Friend> GetFriends(string facebookId, string token)
         {
             FacebookClient client = new FacebookClient(token);
-            var query = String.Format("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = {0}) and online_presence in ('idle', 'active') order by online_presence", facebookId);
+            var query = String.Format("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = {0})", facebookId);
             dynamic parameters = new ExpandoObject();
             parameters.q = query;
             dynamic results = client.Get("/fql", parameters);
@@ -64,10 +64,27 @@ namespace WhoIzIt.BLL.Service
             {
                 foreach (dynamic friend in friends)
                 {
-                    friendResult.Add(new Friend { ID = friend.uid.ToString(), Name = friend.name, Status = (friend.online_presence == "active" ? FriendStatus.Online : FriendStatus.Idle) });
+                    friendResult.Add(new Friend { ID = friend.uid.ToString(), Name = friend.name, Status = GetFriendStatus(friend.online_presence) });
                 }
             }
-            return friendResult;
+            var o = friendResult.OrderBy(f => f.Status).ToList();
+
+            return o;
+        }
+
+        private FriendStatus GetFriendStatus(string facebookFriendStatus)
+        {
+            switch (facebookFriendStatus)
+            {
+                case "active":
+                    return FriendStatus.Online;
+                case "idle":
+                    return FriendStatus.Idle;
+                case "offline":
+                    return FriendStatus.Offline;
+                default:
+                    return FriendStatus.Unknown;
+            }
         }
     }
 }

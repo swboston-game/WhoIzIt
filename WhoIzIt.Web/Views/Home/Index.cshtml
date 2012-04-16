@@ -1,5 +1,7 @@
 @section head {
     <script>
+        
+
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '@ViewBag.AppID', // App ID
@@ -19,11 +21,14 @@
                     // and signed request each expire
                     var uid = response.authResponse.userID;
                     var accessToken = response.authResponse.accessToken;
-                    console.log(uid);
-                    console.log(accessToken);
-
+                    if (console && console.log) {
+                        console.log(uid);
+                        console.log(accessToken);
+                    }
+                    $("#start").hide();
+                    $("#oponent").show();
                     $.ajax({
-                        url: "http://localhost:6821/api/friends?facebookId=" + uid + "&token=" + accessToken,
+                        url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
                     }).done(function (data) {
                         if (console && console.log) {
                             console.log("Sample of data:", data.slice(0, 100));
@@ -33,10 +38,11 @@
                 } else if (response.status === 'not_authorized') {
                     // the user is logged in to Facebook,
                     // but has not authenticated your app
-                    
+                    $("#start").show();
                 } else {
                     // the user isn't logged in to Facebook.
                     alert("not logged in to facebook");
+                    $("#start").show();
                 }
             });
         };
@@ -49,6 +55,16 @@
             js.src = "//connect.facebook.net/en_US/all.js";
             ref.parentNode.insertBefore(js, ref);
         } (document));
+    </script>
+}
+
+@section startupScript{
+    <script type="text/javascript">
+        $(function () {
+            $("#aFriend").click(function () {
+                
+            });
+        });
     </script>
 }
 
@@ -69,4 +85,12 @@
   <!-- you must include this div for the JS SDK to load properly -->
 </div>
 
-<a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
+<div id="start" class="hidden">
+    <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
+</div>
+<div id="oponent" class="hidden">
+    <a href="#_self" id="aFriend">Play with friend</a><br />
+    <a href="">Play with random person</a>
+</div>
+<div id="friend-list" class="hidden">
+</div>

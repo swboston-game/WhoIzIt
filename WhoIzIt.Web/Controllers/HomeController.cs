@@ -17,6 +17,7 @@ namespace WhoIzIt.Web.Controllers
             ViewBag.AuthUrl = authUrl;
             ViewBag.Port = Request.Url.Port;
             ViewBag.AppID = ConfigurationManager.AppSettings["AppID"];
+            ViewBag.WebApiUrl = ConfigurationManager.AppSettings["ApiUri"];
             return View();
         }
 
