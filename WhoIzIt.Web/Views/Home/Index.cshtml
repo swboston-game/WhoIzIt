@@ -95,5 +95,7 @@
     <a href="">Play with random person</a>
 </div>
 <div id="friend-list" class="hidden" data-bind="foreach: Friends">
-    test
+    <img data-bind="attr: {src: PicUrl} " alt="" src="" />
+    <span data-bind="text: Name"></span>
+    <span data-bind="text: Status"></span><br />
 </div>

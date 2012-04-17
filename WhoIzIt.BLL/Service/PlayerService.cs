@@ -64,7 +64,7 @@ namespace WhoIzIt.BLL.Service
             {
                 foreach (dynamic friend in friends)
                 {
-                    friendResult.Add(new Friend { ID = friend.uid.ToString(), Name = friend.name, Status = GetFriendStatus(friend.online_presence) });
+                    friendResult.Add(new Friend { ID = friend.uid.ToString(), Name = friend.name, Status = GetFriendStatus(friend.online_presence), PicUrl = friend.pic_square });
                 }
             }
             var o = friendResult.OrderBy(f => f.Status).ToList();

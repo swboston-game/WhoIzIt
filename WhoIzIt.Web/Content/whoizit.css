@@ -3,7 +3,9 @@
     display: none;
 }
 
-.test
+#friend-list
 {
-    background-color: red;
+    height: 300px;
+    width: 250px;
+    overflow: auto;
 }
