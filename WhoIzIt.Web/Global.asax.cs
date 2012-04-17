@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +8,13 @@ using System.Web.Mvc;
 using System.Web.Routing;
 using Microsoft.Web.Optimization;
 
+=======
+﻿using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
+using Microsoft.Web.Optimization;
+
+>>>>>>> Web Optimizarion
 namespace WhoIzIt.Web
 {
     // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
@@ -43,7 +51,11 @@ namespace WhoIzIt.Web
             RegisterGlobalFilters(GlobalFilters.Filters);
             RegisterRoutes(RouteTable.Routes);
 
+<<<<<<< HEAD
             BundleTable.Bundles.EnableDefaultBundles();
+=======
+           // BundleTable.Bundles.RegisterTemplateBundles();
+>>>>>>> Web Optimizarion
         }
     }
 }
