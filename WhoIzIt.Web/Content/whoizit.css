@@ -1,4 +1,86 @@
-﻿.hidden
+﻿html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    color: #000;
+    font-size: .85em;
+    font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer, hgroup,
+nav, section {
+    display: block;
+}
+
+.float-left {
+    float: left;
+}
+
+.float-right {
+    float: right;
+}
+
+.content-wrapper {
+    margin: 0 auto;
+    max-width: 760px;
+}
+
+/*---------------------Header---------------------*/
+header .box
+{
+    border: 1px solid #000;
+    display: inline-table;
+    width: 100%;
+}
+
+/* menu */
+nav {
+    margin-bottom: 5px;
+}
+
+ul.menu {
+    margin: 10px;
+    padding: 0;
+}
+
+ul.menu li {
+    display: inline;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+ul.menu li a, .rounded-link {
+    background: none;
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid #000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    padding: 10px;
+    width: 50px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+ul.menu li a:hover {
+    text-decoration: none;
+}
+
+#logo
+{
+    margin-right: 100px;
+    vertical-align: bottom;
+    margin-top: 10px;
+}
+
+.hidden
 {
     display: none;
 }
