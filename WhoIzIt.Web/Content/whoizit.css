@@ -29,6 +29,20 @@ nav, section {
     max-width: 760px;
 }
 
+/* page titles */
+hgroup.title {
+    margin-bottom: 10px;
+}
+
+hgroup.title h1, hgroup.title h2 {
+    display: inline;
+}
+
+hgroup.title h2 {
+    font-weight: normal;
+    margin-left: 3px;
+}
+
 /*---------------------Header---------------------*/
 header .box
 {
@@ -79,6 +93,65 @@ ul.menu li a:hover {
     vertical-align: bottom;
     margin-top: 10px;
 }
+
+/*----------------------body--------------*/
+.main-content {
+    padding-left: 10px;
+    padding-top: 30px;
+}
+
+#body {
+    clear: both;
+    padding-bottom: 35px;
+    min-height: 400px;
+}
+
+.clear-fix:after {
+    content: ".";
+    clear: both;
+    display: block;
+    height: 0;
+    visibility: hidden;
+}
+
+#splash 
+{
+    text-align: center;
+}
+
+/*----------------------footer--------------*/
+footer {
+    clear: both;
+    height: 100px;
+}
+
+ul#social li {
+    display: inline;
+    list-style: none;
+}
+
+ul#social li a {
+    color: #999;
+    text-decoration: none;
+}
+
+a.facebook, a.twitter {
+    display: block;
+    float: left;
+    height: 24px;
+    padding-left: 17px;
+    text-indent: -9999px;
+    width: 16px;
+}
+
+a.facebook {
+    background: url("../Images/facebook.png") no-repeat;
+}
+
+a.twitter {
+    background: url("../Images/twitter.png") no-repeat;
+}
+
 
 .hidden
 {

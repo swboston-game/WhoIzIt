@@ -13,6 +13,8 @@
 
             // Additional initialization code here
             FB.getLoginStatus(function (response) {
+                $("#splash").hide();
+                $("#maincontent").show();
                 if (response.status === 'connected') {
                     // the user is logged in and has authenticated your
                     // app, and response.authResponse supplies
@@ -25,16 +27,14 @@
                         console.log(uid);
                         console.log(accessToken);
                     }
-                    $("#start").hide();
-                    $("#oponent").show();
+                    $("#board").show();
                 } else if (response.status === 'not_authorized') {
                     // the user is logged in to Facebook,
                     // but has not authenticated your app
-                    $("#start").show();
+                    $("#newuser").show();
                 } else {
                     // the user isn't logged in to Facebook.
-                    alert("not logged in to facebook");
-                    $("#start").show();
+                    $("#newuser").show();
                 }
             });
         };
@@ -70,32 +70,49 @@
     </script>
 }
 
-@section featured {
-<section class="featured">
-    <div class="content-wrapper">
-        <hgroup class="title">
-            <h1>WhoIzIt?</h1>
-            <h2>Guess who it is</h2>
-        </hgroup>
-        <p>
-            some lorem ipsum text!
-        </p>
-    </div>
-</section>
-}
 <div id="fb-root">
   <!-- you must include this div for the JS SDK to load properly -->
 </div>
 
-<div id="start" class="hidden">
-    <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
+<div id="splash" class="content-wrapper">
+    <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
 </div>
-<div id="oponent" class="hidden">
-    <a href="#_self" id="aFriend">Play with friend</a><br />
-    <a href="">Play with random person</a>
+<div id="maincontent" class="content-wrapper hidden">
+    <div id="newuser" class="hidden">
+        <hgroup class="title">
+            <h1>WhoIzIt?</h1>
+            <h2>Guess who...</h2>
+        </hgroup>
+
+        <article>
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tincidunt justo nec tempor. 
+                Aliquam erat volutpat. Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam 
+                mi augue, posuere at tempus vel, dignissim vitae nulla. Nullam at quam eu sapien mattis ultrices. 
+                Quisque quis leo mi, at lobortis dolor. Nullam scelerisque facilisis placerat. Fusce a augue 
+                erat, malesuada euismod dui. Duis iaculis risus id felis volutpat elementum. Fusce blandit iaculis 
+                quam a cursus. Cras varius tincidunt cursus. Morbi justo eros, adipiscing ac placerat sed, posuere 
+                et mi. Suspendisse vulputate viverra aliquet. Duis non enim a nibh consequat mollis ac tempor 
+                lorem. Phasellus elit leo, semper eu luctus et, suscipit at lacus. In hac habitasse platea 
+                dictumst. Duis dignissim justo sit amet nulla pulvinar sodales.
+            </p>
+        </article>
+        <div id="start">
+            <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
+        </div>
+    </div>
+    <div id="board" class="hidden">
+        <div id="leftmenu">
+        </div>
+    </div>
+    <div id="oponent" class="hidden">
+        <a href="#_self" id="aFriend">Play with friend</a><br />
+        <a href="">Play with random person</a>
+    </div>
+    <div id="friend-list" class="hidden" data-bind="foreach: Friends">
+        <img data-bind="attr: {src: PicUrl} " alt="" src="" />
+        <span data-bind="text: Name"></span>
+        <span data-bind="text: Status"></span><br />
+    </div>
 </div>
-<div id="friend-list" class="hidden" data-bind="foreach: Friends">
-    <img data-bind="attr: {src: PicUrl} " alt="" src="" />
-    <span data-bind="text: Name"></span>
-    <span data-bind="text: Status"></span><br />
-</div>
+
