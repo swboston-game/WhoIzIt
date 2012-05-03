@@ -1,5 +1,5 @@
 @section head {
-    <script>
+    <script type="text/javascript">
         
         var uid, accessToken;
         window.fbAsyncInit = function () {
@@ -13,8 +13,7 @@
 
             // Additional initialization code here
             FB.getLoginStatus(function (response) {
-                $("#splash").hide();
-                $("#maincontent").show();
+                //$("#splash").hide();
                 if (response.status === 'connected') {
                     // the user is logged in and has authenticated your
                     // app, and response.authResponse supplies
@@ -69,15 +68,10 @@
         });
     </script>
 }
-
-<div id="fb-root">
-  <!-- you must include this div for the JS SDK to load properly -->
-</div>
-
-<div id="splash" class="content-wrapper">
-    <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
-</div>
-<div id="maincontent" class="content-wrapper hidden">
+<div id="maincontent">
+    @*<div id="splash" class="content-wrapper hidden">
+        <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
+    </div>
     <div id="newuser" class="hidden">
         <hgroup class="title">
             <h1>WhoIzIt?</h1>
@@ -100,12 +94,34 @@
         <div id="start">
             <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
         </div>
-    </div>
-    <div id="board" class="hidden">
-        <div id="leftmenu">
+    </div>*@
+    <div id="board">
+       <div id="leftmenu" class="float-left">hello
         </div>
+        <div id="content">
+            <table id="friendboard">
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <tr>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+            </table>
+        </div>
+        <div id="controls">hey2</div>
     </div>
-    <div id="oponent" class="hidden">
+</div>
+
+@*<div id="oponent" class="hidden">
         <a href="#_self" id="aFriend">Play with friend</a><br />
         <a href="">Play with random person</a>
     </div>
@@ -113,6 +129,4 @@
         <img data-bind="attr: {src: PicUrl} " alt="" src="" />
         <span data-bind="text: Name"></span>
         <span data-bind="text: Status"></span><br />
-    </div>
-</div>
-
+    </div>*@

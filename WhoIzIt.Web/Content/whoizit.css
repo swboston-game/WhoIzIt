@@ -96,14 +96,13 @@ ul.menu li a:hover {
 
 /*----------------------body--------------*/
 .main-content {
-    padding-left: 10px;
-    padding-top: 30px;
 }
 
 #body {
     clear: both;
-    padding-bottom: 35px;
-    min-height: 400px;
+    margin-top: -4px;
+    border: 1px solid #000;
+    border-top-width: 0px;
 }
 
 .clear-fix:after {
@@ -118,7 +117,42 @@ ul.menu li a:hover {
 {
     text-align: center;
 }
+#board
+{
+    height: 650px;
+}
 
+#board #leftmenu
+{
+    width: 200px;
+    height: 100%;
+    border-right: 1px solid #000;
+    padding: 5px;
+}
+
+#board #content
+{
+    height: 400px;
+    width: 760px;
+}
+
+#board #controls
+{
+    height: 250px;
+}
+
+#friendboard
+{
+    width: 549px; 
+    border-collapse: collapse;
+    height: 100%;
+}
+#friendboard td
+{
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    padding: 0;
+}
 /*----------------------footer--------------*/
 footer {
     clear: both;
