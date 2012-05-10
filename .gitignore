@@ -22,3 +22,4 @@ log.txt
 log.xml
 build/
 _Resharper*
+connectionStrings.config

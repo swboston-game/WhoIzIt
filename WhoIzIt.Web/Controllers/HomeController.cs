@@ -15,7 +15,7 @@ namespace WhoIzIt.Web.Controllers
             }
             string authUrl = String.Format("https://www.facebook.com/dialog/oauth?client_id={0}&redirect_uri={1}&scope=friends_online_presence,publish_stream,publish_actions,user_games_activity,email", ConfigurationManager.AppSettings["AppID"], Url.Encode(ConfigurationManager.AppSettings["AppUri"]));
             ViewBag.AuthUrl = authUrl;
-            ViewBag.Port = Request.Url.Port;
+            ViewBag.Domain = Request.Url.AbsoluteUri.TrimEnd('/');
             ViewBag.AppID = ConfigurationManager.AppSettings["AppID"];
             ViewBag.WebApiUrl = ConfigurationManager.AppSettings["ApiUri"];
             return View();

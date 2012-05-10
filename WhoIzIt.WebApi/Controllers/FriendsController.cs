@@ -12,9 +12,7 @@ namespace WhoIzIt.WebApi.Controllers
         public IEnumerable<Friend> Get(string facebookID, string token)
         {
             PlayerService playerService = new PlayerService();
-            var x = playerService.GetFriends(facebookID, token);
-
-            return x.AsEnumerable();
+            return playerService.GetFriends(facebookID, token);
         }
 
     }

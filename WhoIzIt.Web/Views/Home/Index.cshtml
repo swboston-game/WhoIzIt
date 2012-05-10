@@ -1,11 +1,48 @@
 @section head {
     <script type="text/javascript">
-        
-        var uid, accessToken;
+        var webApiUrl = '@ViewBag.WebApiUrl';
+        var viewModel;
+        function viewModel() {
+            var self = this;
+
+            self.accessToken = ko.observable('');
+            self.userId = ko.observable('');
+            self.friends = ko.observableArray([]);
+            self.games = ko.observableArray([]);
+            self.leaderBoard = ko.observableArray([]);
+            self.leaderBoardLoading = ko.observable(false);
+            self.isBusy = ko.observable(true);
+        }
+
+        var initialize = function (uid, accessToken) {
+            viewModel = new viewModel();
+            viewModel.accessToken = ko.observable(accessToken);
+            viewModel.userId = ko.observable(uid);
+            $.ajax({
+                url: webApiUrl + '/game?facebookId=' + uid + '&token=' + accessToken
+                }).done(function (data) {
+                    viewModel.friends(ko.mapping.fromJS(data)());
+                }).fail(function(jqXHR, textStatus) {
+                    alert("failed"); //TODO: do something
+                });
+            
+            viewModel.leaderBoardLoading = ko.observable(true);
+            $.ajax({
+                    url: webApiUrl + '/leaderboard'
+                }).done(function (data) {
+                    viewModel.leaderBoard(ko.mapping.fromJS(data)());
+                    viewModel.leaderBoardLoading = ko.observable(false);        
+                }).fail(functionjqXHR, textStatus) {
+                    alert("failed"); //TODO: do something
+                });
+
+            ko.applyBindings(viewModel);
+        }
+
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '@ViewBag.AppID', // App ID
-                channelUrl: '//localhost:@ViewBag.Port/Home/Channel', // Channel File
+                channelUrl: '@ViewBag.Domain/Home/Channel', // Channel File
                 status: true, // check login status
                 cookie: true, // enable cookies to allow the server to access the session
                 xfbml: true  // parse XFBML
@@ -13,28 +50,13 @@
 
             // Additional initialization code here
             FB.getLoginStatus(function (response) {
-                //$("#splash").hide();
+                var uid, accessToken;
                 if (response.status === 'connected') {
-                    // the user is logged in and has authenticated your
-                    // app, and response.authResponse supplies
-                    // the user's ID, a valid access token, a signed
-                    // request, and the time the access token
-                    // and signed request each expire
                     uid = response.authResponse.userID;
                     accessToken = response.authResponse.accessToken;
-                    if (console && console.log) {
-                        console.log(uid);
-                        console.log(accessToken);
-                    }
-                    $("#board").show();
-                } else if (response.status === 'not_authorized') {
-                    // the user is logged in to Facebook,
-                    // but has not authenticated your app
-                    $("#newuser").show();
-                } else {
-                    // the user isn't logged in to Facebook.
-                    $("#newuser").show();
                 }
+                initialize(uid, accessToken);
+                
             });
         };
 
@@ -46,17 +68,8 @@
             js.src = "//connect.facebook.net/en_US/all.js";
             ref.parentNode.insertBefore(js, ref);
         } (document));
-    </script>
-}
 
-@section startupScript{
-    <script type="text/javascript">
         $(function () {
-            var viewModel = {
-                Friends: ko.observableArray([])
-            };
-
-            ko.applyBindings(viewModel);
             $("#aFriend").click(function () {
                 $.ajax({
                         url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
@@ -68,11 +81,12 @@
         });
     </script>
 }
+
 <div id="maincontent">
-    @*<div id="splash" class="content-wrapper hidden">
+    <div id="splash" class="content-wrapper" data-bind="visible: isBusy">
         <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
     </div>
-    <div id="newuser" class="hidden">
+    @*<div id="newuser" class="hidden">
         <hgroup class="title">
             <h1>WhoIzIt?</h1>
             <h2>Guess who...</h2>
@@ -95,7 +109,7 @@
             <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
         </div>
     </div>*@
-    <div id="board">
+    <div id="board" class="hidden">
        <div id="leftmenu" class="float-left">hello
         </div>
         <div id="content">

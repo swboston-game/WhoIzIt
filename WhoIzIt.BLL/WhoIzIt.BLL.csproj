@@ -53,6 +53,7 @@
     <Compile Include="Service\GameService.cs" />
     <Compile Include="Service\IGamePiecesService.cs" />
     <Compile Include="Service\IGameService.cs" />
+    <Compile Include="Service\ILeaderBoardService.cs" />
     <Compile Include="Service\INotificationService.cs" />
     <Compile Include="Service\LeaderBoardService.cs" />
     <Compile Include="Model\LeaderBoard.cs" />

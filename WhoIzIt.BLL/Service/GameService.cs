@@ -142,9 +142,14 @@ namespace WhoIzIt.BLL.Service
             return won;
         }
 
-        public ICollection<Friend> GetFriends(string id)
+        public IEnumerable<Friend> GetFriends(string id)
         {
             return null;
+        }
+
+        public IEnumerable<Game> GetGames(string id)
+        {
+            return _context.Games.Where(g => g.Opponent.FaceBookId == id || g.Challenger.FaceBookId == id).AsEnumerable();
         }
     }
 }

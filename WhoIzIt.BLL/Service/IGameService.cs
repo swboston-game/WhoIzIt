@@ -4,7 +4,7 @@ using WhoIzIt.Model;
 
 namespace WhoIzIt.BLL.Service
 {
-    internal interface IGameService
+    public interface IGameService
     {
         void Invite(int challengerId, int opponentId);
 
@@ -22,6 +22,8 @@ namespace WhoIzIt.BLL.Service
 
         bool Guess(int gameId, int playerId, int gamePieceId);
 
-        ICollection<Friend> GetFriends(string id);
+        IEnumerable<Friend> GetFriends(string id);
+
+        IEnumerable<Game> GetGames(string id);
     }
 }

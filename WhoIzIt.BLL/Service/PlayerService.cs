@@ -50,7 +50,7 @@ namespace WhoIzIt.BLL.Service
             _context.SaveChanges();
         }
 
-        public ICollection<Friend> GetFriends(string facebookId, string token)
+        public IEnumerable<Friend> GetFriends(string facebookId, string token)
         {
             FacebookClient client = new FacebookClient(token);
             var query = String.Format("SELECT uid, name, pic_square, online_presence FROM user WHERE uid IN (SELECT uid2 FROM friend WHERE uid1 = {0})", facebookId);
@@ -67,7 +67,7 @@ namespace WhoIzIt.BLL.Service
                     friendResult.Add(new Friend { ID = friend.uid.ToString(), Name = friend.name, Status = GetFriendStatus(friend.online_presence), PicUrl = friend.pic_square });
                 }
             }
-            var o = friendResult.OrderBy(f => f.Status).ToList();
+            var o = friendResult.OrderBy(f => f.Status);
 
             return o;
         }

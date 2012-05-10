@@ -5,10 +5,14 @@ using WhoIzIt.Model;
 
 namespace WhoIzIt.BLL.Service
 {
-    public class LeaderBoardService
+    public class LeaderBoardService : ILeaderBoardService
     {
-        private readonly WhoIzItDbContext _context = new WhoIzItDbContext();
-        private readonly PlayerService _playersService = new PlayerService();
+        private readonly IWhoIzItDbContext _context;
+
+        public LeaderBoardService(IWhoIzItDbContext context)
+        {
+            _context = context;
+        }
 
         public IEnumerable<LeaderBoard> GetLeaderBoardByPoints(int totalRecords)
         {
