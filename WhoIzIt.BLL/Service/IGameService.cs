@@ -18,12 +18,12 @@ namespace WhoIzIt.BLL.Service
 
         void AskQuestion(int gameId, int playerId, string questionText);
 
-        void AnswerQuestion(int questionId, Answer answer);
+        void AnswerQuestion(int questionId, string answer);
 
         bool Guess(int gameId, int playerId, int gamePieceId);
 
-        IEnumerable<Friend> GetFriends(string id);
+        IEnumerable<Friend> GetFriends(long id);
 
-        IEnumerable<Game> GetGames(string id);
+        IEnumerable<Game> GetGames(long id);
     }
 }

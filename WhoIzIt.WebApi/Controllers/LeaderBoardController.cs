@@ -13,7 +13,7 @@ namespace WhoIzIt.WebApi.Controllers
 
         public IEnumerable<LeaderBoard> Get()
         {
-            IWhoIzItDbContext context = new WhoIzItDbContext();
+            WhozitEntities context = new WhozitEntities();
             ILeaderBoardService leaderBoardService = new LeaderBoardService(context);
             return leaderBoardService.GetLeaderBoardByPoints(10);
         }

@@ -1,0 +1,719 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="2.0" xmlns:edmx="http://schemas.microsoft.com/ado/2008/10/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Whozit.Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+        <EntityContainer Name="WhozitModelStoreContainer">
+          <EntitySet Name="Badges" EntityType="Whozit.Model.Store.Badges" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GamePieces" EntityType="Whozit.Model.Store.GamePieces" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Games" EntityType="Whozit.Model.Store.Games" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="GameStatus" EntityType="Whozit.Model.Store.GameStatus" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Players" EntityType="Whozit.Model.Store.Players" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="Questions" EntityType="Whozit.Model.Store.Questions" store:Type="Tables" Schema="dbo" />
+          <EntitySet Name="QuestionsAsked" EntityType="Whozit.Model.Store.QuestionsAsked" store:Type="Tables" Schema="dbo" />
+          <AssociationSet Name="FK_Badges_Players_Player_Id" Association="Whozit.Model.Store.FK_Badges_Players_Player_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Badges" EntitySet="Badges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamePieces_Games_Game_Id" Association="Whozit.Model.Store.FK_GamePieces_Games_Game_Id">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GamePieces" EntitySet="GamePieces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GamePieces_ChallengerSelection_Id" Association="Whozit.Model.Store.FK_Games_GamePieces_ChallengerSelection_Id">
+            <End Role="GamePieces" EntitySet="GamePieces" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GamePieces_OpponenetSelection_Id" Association="Whozit.Model.Store.FK_Games_GamePieces_OpponenetSelection_Id">
+            <End Role="GamePieces" EntitySet="GamePieces" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GameStatus" Association="Whozit.Model.Store.FK_Games_GameStatus">
+            <End Role="GameStatus" EntitySet="GameStatus" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Challenger_Id" Association="Whozit.Model.Store.FK_Games_Players_Challenger_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Opponent_Id" Association="Whozit.Model.Store.FK_Games_Players_Opponent_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_PlayersMove_Id" Association="Whozit.Model.Store.FK_Games_Players_PlayersMove_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Winner_Id" Association="Whozit.Model.Store.FK_Games_Players_Winner_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsAsked_Games" Association="Whozit.Model.Store.FK_QuestionsAsked_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="QuestionsAsked" EntitySet="QuestionsAsked" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Badges">
+          <Key>
+            <PropertyRef Name="BadgeId" />
+          </Key>
+          <Property Name="BadgeId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="WindsNeeded" Type="int" Nullable="false" />
+          <Property Name="StreakNeeded" Type="int" Nullable="false" />
+          <Property Name="LosesNeeded" Type="int" Nullable="false" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="Player_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="GamePieces">
+          <Key>
+            <PropertyRef Name="GamePieceId" />
+          </Key>
+          <Property Name="GamePieceId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="FacebookId" Type="bigint" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="Discriminator" Type="nvarchar" Nullable="false" MaxLength="128" />
+          <Property Name="Game_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="Games">
+          <Key>
+            <PropertyRef Name="GameId" />
+          </Key>
+          <Property Name="GameId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="Challenger_Id" Type="int" />
+          <Property Name="Opponent_Id" Type="int" />
+          <Property Name="ChallengerSelection_Id" Type="int" />
+          <Property Name="OpponenetSelection_Id" Type="int" />
+          <Property Name="Winner_Id" Type="int" />
+          <Property Name="PlayersMove_Id" Type="int" />
+          <Property Name="GameStatusID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="GameStatus">
+          <Key>
+            <PropertyRef Name="GameStatusID" />
+          </Key>
+          <Property Name="GameStatusID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="nvarchar" Nullable="false" MaxLength="20" />
+          <Property Name="ModifyDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Players">
+          <Key>
+            <PropertyRef Name="PlayerId" />
+          </Key>
+          <Property Name="PlayerId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="FaceBookId" Type="bigint" />
+          <Property Name="Streak" Type="int" Nullable="false" />
+          <Property Name="Wins" Type="int" Nullable="false" />
+          <Property Name="Loses" Type="int" Nullable="false" />
+          <Property Name="TotalPoints" Type="int" Nullable="false" />
+          <Property Name="ImageUrl" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Questions">
+          <Key>
+            <PropertyRef Name="QuestionId" />
+          </Key>
+          <Property Name="QuestionId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionText" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="Game_Id" Type="int" />
+        </EntityType>
+        <EntityType Name="QuestionsAsked">
+          <Key>
+            <PropertyRef Name="QuestionAskedId" />
+          </Key>
+          <Property Name="QuestionAskedId" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="int" Nullable="false" />
+          <Property Name="QuestionText" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Answer" Type="nvarchar" MaxLength="1000" />
+          <Property Name="CreatedOn" Type="datetime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="datetime" Nullable="false" />
+          <Property Name="Game_Id" Type="int" />
+        </EntityType>
+        <Association Name="FK_Badges_Players_Player_Id">
+          <End Role="Players" Type="Whozit.Model.Store.Players" Multiplicity="0..1" />
+          <End Role="Badges" Type="Whozit.Model.Store.Badges" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Badges">
+              <PropertyRef Name="Player_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamePieces_Games_Game_Id">
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="0..1" />
+          <End Role="GamePieces" Type="Whozit.Model.Store.GamePieces" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="GamePieces">
+              <PropertyRef Name="Game_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GamePieces_ChallengerSelection_Id">
+          <End Role="GamePieces" Type="Whozit.Model.Store.GamePieces" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePieces">
+              <PropertyRef Name="GamePieceId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="ChallengerSelection_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GamePieces_OpponenetSelection_Id">
+          <End Role="GamePieces" Type="Whozit.Model.Store.GamePieces" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePieces">
+              <PropertyRef Name="GamePieceId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="OpponenetSelection_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GameStatus">
+          <End Role="GameStatus" Type="Whozit.Model.Store.GameStatus" Multiplicity="1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameStatus">
+              <PropertyRef Name="GameStatusID" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GameStatusID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Challenger_Id">
+          <End Role="Players" Type="Whozit.Model.Store.Players" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Challenger_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Opponent_Id">
+          <End Role="Players" Type="Whozit.Model.Store.Players" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Opponent_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_PlayersMove_Id">
+          <End Role="Players" Type="Whozit.Model.Store.Players" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayersMove_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Winner_Id">
+          <End Role="Players" Type="Whozit.Model.Store.Players" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="PlayerId" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="Winner_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsAsked_Games">
+          <End Role="Games" Type="Whozit.Model.Store.Games" Multiplicity="1" />
+          <End Role="QuestionsAsked" Type="Whozit.Model.Store.QuestionsAsked" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="GameId" />
+            </Principal>
+            <Dependent Role="QuestionsAsked">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="Whozit.Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+        <EntityContainer Name="WhozitEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Badges" EntityType="Whozit.Model.Badge" />
+          <EntitySet Name="GamePieces" EntityType="Whozit.Model.GamePiece" />
+          <EntitySet Name="Games" EntityType="Whozit.Model.Game" />
+          <EntitySet Name="GameStatus1" EntityType="Whozit.Model.GameStatus" />
+          <EntitySet Name="Players" EntityType="Whozit.Model.Player" />
+          <EntitySet Name="CannedQuestions" EntityType="Whozit.Model.CannedQuestion" />
+          <EntitySet Name="Questions" EntityType="Whozit.Model.Question" />
+          <AssociationSet Name="FK_Badges_Players_Player_Id" Association="Whozit.Model.FK_Badges_Players_Player_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Badges" EntitySet="Badges" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GamePieces_Games_Game_Id" Association="Whozit.Model.FK_GamePieces_Games_Game_Id">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="GamePieces" EntitySet="GamePieces" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GamePieces_ChallengerSelection_Id" Association="Whozit.Model.FK_Games_GamePieces_ChallengerSelection_Id">
+            <End Role="GamePieces" EntitySet="GamePieces" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GamePieces_OpponenetSelection_Id" Association="Whozit.Model.FK_Games_GamePieces_OpponenetSelection_Id">
+            <End Role="GamePieces" EntitySet="GamePieces" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_GameStatus" Association="Whozit.Model.FK_Games_GameStatus">
+            <End Role="GameStatus" EntitySet="GameStatus1" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Challenger_Id" Association="Whozit.Model.FK_Games_Players_Challenger_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Opponent_Id" Association="Whozit.Model.FK_Games_Players_Opponent_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_PlayersMove_Id" Association="Whozit.Model.FK_Games_Players_PlayersMove_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Games_Players_Winner_Id" Association="Whozit.Model.FK_Games_Players_Winner_Id">
+            <End Role="Players" EntitySet="Players" />
+            <End Role="Games" EntitySet="Games" />
+          </AssociationSet>
+          <AssociationSet Name="FK_QuestionsAsked_Games" Association="Whozit.Model.FK_QuestionsAsked_Games">
+            <End Role="Games" EntitySet="Games" />
+            <End Role="QuestionsAsked" EntitySet="Questions" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Badge">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" Unicode="true" FixedLength="false" />
+          <Property Name="Description" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="WinsNeeded" Type="Int32" Nullable="false" />
+          <Property Name="StreakNeeded" Type="Int32" Nullable="false" />
+          <Property Name="LosesNeeded" Type="Int32" Nullable="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="PlayerId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="GamePiece">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FacebookId" Type="Int64" />
+          <Property Name="ImageUrl" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="Discriminator" Type="String" Nullable="false" MaxLength="128" Unicode="true" FixedLength="false" />
+          <Property Name="GameId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Game">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="ChallengerId" Type="Int32" />
+          <Property Name="OpponentId" Type="Int32" />
+          <Property Name="ChallengerSelectionId" Type="Int32" />
+          <Property Name="OpponenetSelectionId" Type="Int32" />
+          <Property Name="WinnerId" Type="Int32" />
+          <Property Name="PlayersMoveId" Type="Int32" />
+          <Property Name="GameStatusId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="GamePieces" Relationship="Whozit.Model.FK_GamePieces_Games_Game_Id" FromRole="Games" ToRole="GamePieces" />
+          <NavigationProperty Name="ChallengerPiece" Relationship="Whozit.Model.FK_Games_GamePieces_ChallengerSelection_Id" FromRole="Games" ToRole="GamePieces" />
+          <NavigationProperty Name="OpponentsPiece" Relationship="Whozit.Model.FK_Games_GamePieces_OpponenetSelection_Id" FromRole="Games" ToRole="GamePieces" />
+          <NavigationProperty Name="GameStatus" Relationship="Whozit.Model.FK_Games_GameStatus" FromRole="Games" ToRole="GameStatus" />
+          <NavigationProperty Name="Challenger" Relationship="Whozit.Model.FK_Games_Players_Challenger_Id" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="Opponent" Relationship="Whozit.Model.FK_Games_Players_Opponent_Id" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="PlayersMove" Relationship="Whozit.Model.FK_Games_Players_PlayersMove_Id" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="Winner" Relationship="Whozit.Model.FK_Games_Players_Winner_Id" FromRole="Games" ToRole="Players" />
+          <NavigationProperty Name="QuestionsAskeds" Relationship="Whozit.Model.FK_QuestionsAsked_Games" FromRole="Games" ToRole="QuestionsAsked" />
+        </EntityType>
+        <EntityType Name="GameStatus">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Status" Type="String" Nullable="false" MaxLength="20" Unicode="true" FixedLength="false" />
+          <Property Name="ModifyDateTime" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Games" Relationship="Whozit.Model.FK_Games_GameStatus" FromRole="GameStatus" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="Player">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DisplayName" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="Email" Type="String" MaxLength="50" Unicode="true" FixedLength="false" />
+          <Property Name="FaceBookId" Type="Int64" />
+          <Property Name="Streak" Type="Int32" Nullable="false" />
+          <Property Name="Wins" Type="Int32" Nullable="false" />
+          <Property Name="Loses" Type="Int32" Nullable="false" />
+          <Property Name="TotalPoints" Type="Int32" Nullable="false" />
+          <Property Name="ImageUrl" Type="String" MaxLength="500" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <NavigationProperty Name="Badges" Relationship="Whozit.Model.FK_Badges_Players_Player_Id" FromRole="Players" ToRole="Badges" />
+          <NavigationProperty Name="Games" Relationship="Whozit.Model.FK_Games_Players_Challenger_Id" FromRole="Players" ToRole="Games" />
+        </EntityType>
+        <EntityType Name="CannedQuestion">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="QuestionText" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="GameId" Type="Int32" />
+        </EntityType>
+        <EntityType Name="Question">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="GameID" Type="Int32" Nullable="false" />
+          <Property Name="QuestionText" Type="String" MaxLength="1000" Unicode="true" FixedLength="false" />
+          <Property Name="CreatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="UpdatedOn" Type="DateTime" Nullable="false" />
+          <Property Name="GameId" Type="Int32" />
+          <NavigationProperty Name="Game" Relationship="Whozit.Model.FK_QuestionsAsked_Games" FromRole="QuestionsAsked" ToRole="Games" />
+          <Property Type="String" Name="Answer" MaxLength="1000" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Badges_Players_Player_Id">
+          <End Role="Players" Type="Whozit.Model.Player" Multiplicity="0..1" />
+          <End Role="Badges" Type="Whozit.Model.Badge" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Badges">
+              <PropertyRef Name="PlayerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GamePieces_Games_Game_Id">
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="0..1" />
+          <End Role="GamePieces" Type="Whozit.Model.GamePiece" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="GamePieces">
+              <PropertyRef Name="GameId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GamePieces_ChallengerSelection_Id">
+          <End Role="GamePieces" Type="Whozit.Model.GamePiece" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePieces">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="ChallengerSelectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GamePieces_OpponenetSelection_Id">
+          <End Role="GamePieces" Type="Whozit.Model.GamePiece" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GamePieces">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="OpponenetSelectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_GameStatus">
+          <End Role="GameStatus" Type="Whozit.Model.GameStatus" Multiplicity="1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GameStatus">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="GameStatusId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Challenger_Id">
+          <End Role="Players" Type="Whozit.Model.Player" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="ChallengerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Opponent_Id">
+          <End Role="Players" Type="Whozit.Model.Player" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="OpponentId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_PlayersMove_Id">
+          <End Role="Players" Type="Whozit.Model.Player" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="PlayersMoveId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Games_Players_Winner_Id">
+          <End Role="Players" Type="Whozit.Model.Player" Multiplicity="0..1" />
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Players">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Games">
+              <PropertyRef Name="WinnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_QuestionsAsked_Games">
+          <End Role="Games" Type="Whozit.Model.Game" Multiplicity="1" />
+          <End Role="QuestionsAsked" Type="Whozit.Model.Question" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Games">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="QuestionsAsked">
+              <PropertyRef Name="GameID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="WhozitModelStoreContainer" CdmEntityContainer="WhozitEntities">
+          <EntitySetMapping Name="Badges">
+            <EntityTypeMapping TypeName="Whozit.Model.Badge">
+              <MappingFragment StoreEntitySet="Badges">
+                <ScalarProperty Name="Id" ColumnName="BadgeId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="WinsNeeded" ColumnName="WindsNeeded" />
+                <ScalarProperty Name="StreakNeeded" ColumnName="StreakNeeded" />
+                <ScalarProperty Name="LosesNeeded" ColumnName="LosesNeeded" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="PlayerId" ColumnName="Player_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GamePieces">
+            <EntityTypeMapping TypeName="Whozit.Model.GamePiece">
+              <MappingFragment StoreEntitySet="GamePieces">
+                <ScalarProperty Name="Id" ColumnName="GamePieceId" />
+                <ScalarProperty Name="FacebookId" ColumnName="FacebookId" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="Discriminator" ColumnName="Discriminator" />
+                <ScalarProperty Name="GameId" ColumnName="Game_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Games">
+            <EntityTypeMapping TypeName="Whozit.Model.Game">
+              <MappingFragment StoreEntitySet="Games">
+                <ScalarProperty Name="Id" ColumnName="GameId" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="ChallengerId" ColumnName="Challenger_Id" />
+                <ScalarProperty Name="OpponentId" ColumnName="Opponent_Id" />
+                <ScalarProperty Name="ChallengerSelectionId" ColumnName="ChallengerSelection_Id" />
+                <ScalarProperty Name="OpponenetSelectionId" ColumnName="OpponenetSelection_Id" />
+                <ScalarProperty Name="WinnerId" ColumnName="Winner_Id" />
+                <ScalarProperty Name="PlayersMoveId" ColumnName="PlayersMove_Id" />
+                <ScalarProperty Name="GameStatusId" ColumnName="GameStatusID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GameStatus1">
+            <EntityTypeMapping TypeName="Whozit.Model.GameStatus">
+              <MappingFragment StoreEntitySet="GameStatus">
+                <ScalarProperty Name="Id" ColumnName="GameStatusID" />
+                <ScalarProperty Name="Status" ColumnName="Status" />
+                <ScalarProperty Name="ModifyDateTime" ColumnName="ModifyDateTime" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Players">
+            <EntityTypeMapping TypeName="Whozit.Model.Player">
+              <MappingFragment StoreEntitySet="Players">
+                <ScalarProperty Name="Id" ColumnName="PlayerId" />
+                <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="FaceBookId" ColumnName="FaceBookId" />
+                <ScalarProperty Name="Streak" ColumnName="Streak" />
+                <ScalarProperty Name="Wins" ColumnName="Wins" />
+                <ScalarProperty Name="Loses" ColumnName="Loses" />
+                <ScalarProperty Name="TotalPoints" ColumnName="TotalPoints" />
+                <ScalarProperty Name="ImageUrl" ColumnName="ImageUrl" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CannedQuestions">
+            <EntityTypeMapping TypeName="Whozit.Model.CannedQuestion">
+              <MappingFragment StoreEntitySet="Questions">
+                <ScalarProperty Name="Id" ColumnName="QuestionId" />
+                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="GameId" ColumnName="Game_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Questions">
+            <EntityTypeMapping TypeName="Whozit.Model.Question">
+              <MappingFragment StoreEntitySet="QuestionsAsked">
+                <ScalarProperty Name="Answer" ColumnName="Answer" />
+                <ScalarProperty Name="Id" ColumnName="QuestionAskedId" />
+                <ScalarProperty Name="GameID" ColumnName="GameID" />
+                <ScalarProperty Name="QuestionText" ColumnName="QuestionText" />
+                <ScalarProperty Name="CreatedOn" ColumnName="CreatedOn" />
+                <ScalarProperty Name="UpdatedOn" ColumnName="UpdatedOn" />
+                <ScalarProperty Name="GameId" ColumnName="Game_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2008/10/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="True" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams>
+      <Diagram Name="WhoIzItModel">
+        <EntityTypeShape EntityType="Whozit.Model.Badge" Width="1.5" PointX="3" PointY="4.75" Height="2.9417936197916656" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.GamePiece" Width="1.5" PointX="9.875" PointY="2.75" Height="2.3848893229166652" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.Game" Width="2.5" PointX="6" PointY="4" Height="4.6725065104166656" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.GameStatus" Width="1.5" PointX="3.75" PointY="1.375" Height="1.7879850260416657" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.Player" Width="1.5" PointX="0.75" PointY="4.25" Height="3.5186979166666656" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.CannedQuestion" Width="1.5" PointX="0.75" PointY="0.75" Height="1.9802864583333326" IsExpanded="true" />
+        <EntityTypeShape EntityType="Whozit.Model.Question" Width="1.5" PointX="9.75" PointY="6.25" Height="2.5571907552083317" IsExpanded="true" />
+        <AssociationConnector Association="Whozit.Model.FK_Badges_Players_Player_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="6.2208968098958328" />
+          <ConnectorPoint PointX="3" PointY="6.2208968098958328" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_GamePieces_Games_Game_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.5" PointY="4.6367756934184978" />
+          <ConnectorPoint PointX="9.875" PointY="4.6367756934184978" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_GamePieces_ChallengerSelection_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="9.875" PointY="4.2558878467092489" />
+          <ConnectorPoint PointX="8.5" PointY="4.2558878467092489" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_GamePieces_OpponenetSelection_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="9.875" PointY="4.9483325081675815" />
+          <ConnectorPoint PointX="8.5" PointY="4.9483325081675815" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_GameStatus" ManuallyRouted="false">
+          <ConnectorPoint PointX="4.90625" PointY="3.1629850260416656" />
+          <ConnectorPoint PointX="4.90625" PointY="8.1297202408854154" />
+          <ConnectorPoint PointX="6" PointY="8.1297202408854154" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_Players_Challenger_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.46875" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="4.4687499999999991" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="4.46875" />
+          <ConnectorPoint PointX="6" PointY="4.46875" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_Players_Opponent_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="1.804689375" PointY="7.7686979166666656" />
+          <ConnectorPoint PointX="1.804689375" PointY="8.5676518619791686" />
+          <ConnectorPoint PointX="6" PointY="8.5676518619791686" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_Players_PlayersMove_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.640625" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="4.6406249999999991" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="4.640625" />
+          <ConnectorPoint PointX="6" PointY="4.640625" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_Games_Players_Winner_Id" ManuallyRouted="false">
+          <ConnectorPoint PointX="2.25" PointY="4.296875" />
+          <ConnectorPoint PointX="4.822916666666667" PointY="4.2968749999999991" />
+          <ConnectorPoint PointX="4.989583333333333" PointY="4.296875" />
+          <ConnectorPoint PointX="6" PointY="4.296875" />
+        </AssociationConnector>
+        <AssociationConnector Association="Whozit.Model.FK_QuestionsAsked_Games" ManuallyRouted="false">
+          <ConnectorPoint PointX="8.5" PointY="7.4612532552083328" />
+          <ConnectorPoint PointX="9.75" PointY="7.4612532552083328" />
+        </AssociationConnector>
+      </Diagram>
+    </Diagrams>
+  </Designer>
+</edmx:Edmx>

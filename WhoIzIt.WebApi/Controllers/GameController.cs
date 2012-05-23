@@ -9,12 +9,12 @@ namespace WhoIzIt.WebApi.Controllers
     {
         //
         // GET: /Game/
-        public IEnumerable<Game> Get(string facebookId, string token)
+        public IEnumerable<Game> Get(long facebookId, string token)
         {
-            IWhoIzItDbContext context = new WhoIzItDbContext();
-            INotificationService notificationService = new FacebookNotificationService(token);
-            IGamePiecesService gamePiecesService = new GamePiecesService();
-            IGameService gameService = new GameService(context, notificationService, gamePiecesService);
+            var context = new WhozitEntities();
+            var notificationService = new FacebookNotificationService(token);
+            var gamePiecesService = new GamePiecesService();
+            var gameService = new GameService(context, notificationService, gamePiecesService);
             return gameService.GetGames(facebookId);
         }
 

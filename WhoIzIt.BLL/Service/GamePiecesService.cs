@@ -9,24 +9,24 @@ namespace WhoIzIt.BLL.Service
     public class GamePiecesService : IGamePiecesService
     {
         //TODO: do some dependency injections (maybe for beta)
-        private readonly IWhoIzItDbContext _context = null;
+        private readonly WhozitEntities _context = null;
 
         public GamePiecesService()
         {
-            _context = new WhoIzItDbContext();
+            _context = new WhozitEntities();
         }
 
-        public GamePiecesService(IWhoIzItDbContext context)
+        public GamePiecesService(WhozitEntities context)
         {
             _context = context;
         }
 
-        public ICollection<GamePiece> GenerateGamePieces(int challengerId, int opponentId)
+        public IEnumerable<GamePiece> GenerateGamePieces(int challengerId, int opponentId)
         {
             var challenger = _context.Players.Single(p => p.Id == challengerId);
             var opponent = _context.Players.Single(p => p.Id == opponentId);
-            var challengerFacebookFriends = GetFaceBrookFriends(challenger.FaceBookId).ToList();
-            var opponentFaceBookFriends = GetFaceBrookFriends(opponent.FaceBookId).ToList();
+            var challengerFacebookFriends = GetFaceBrookFriends((long)challenger.FaceBookId).ToList();
+            var opponentFaceBookFriends = GetFaceBrookFriends((long)opponent.FaceBookId).ToList();
             challengerFacebookFriends.AddRange(opponentFaceBookFriends);
             var friends = challengerFacebookFriends.Distinct();
             var gamePieces = friends.Select(friend => new GamePiece
@@ -44,7 +44,7 @@ namespace WhoIzIt.BLL.Service
 
         private IEnumerable<GamePiece> GetRandomGamePieces(int howManyNeeded)
         {
-            var stockPieces = _context.StockGamePieces.ToList();
+            var stockPieces = _context.GamePieces.ToList();
             var pieces = new List<GamePiece>();
             for (var i = 0; i < howManyNeeded; i++)
             {
@@ -57,12 +57,12 @@ namespace WhoIzIt.BLL.Service
             return pieces;
         }
 
-        private string GetImageUrlFromFaceBook(string friend)
+        private string GetImageUrlFromFaceBook(long friend)
         {
             throw new NotImplementedException();
         }
 
-        private IEnumerable<string> GetFaceBrookFriends(string faceBookId)
+        private IEnumerable<long> GetFaceBrookFriends(long faceBookId)
         {
             throw new NotImplementedException();
         }

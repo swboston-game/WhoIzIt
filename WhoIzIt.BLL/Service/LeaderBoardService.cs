@@ -7,9 +7,9 @@ namespace WhoIzIt.BLL.Service
 {
     public class LeaderBoardService : ILeaderBoardService
     {
-        private readonly IWhoIzItDbContext _context;
+        private readonly WhozitEntities _context;
 
-        public LeaderBoardService(IWhoIzItDbContext context)
+        public LeaderBoardService(WhozitEntities context)
         {
             _context = context;
         }

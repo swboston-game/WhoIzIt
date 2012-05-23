@@ -5,6 +5,6 @@ namespace WhoIzIt.BLL.Service
 {
     public interface IGamePiecesService
     {
-        ICollection<GamePiece> GenerateGamePieces(int challengerId, int opponentId);
+        IEnumerable<GamePiece> GenerateGamePieces(int challengerId, int opponentId);
     }
 }

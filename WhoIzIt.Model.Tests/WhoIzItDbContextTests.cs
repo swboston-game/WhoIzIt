@@ -1,18 +1,15 @@
-﻿using System;
-using System.Text;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace WhoIzIt.Model.Tests
 {
     [TestClass]
-    public class WhoIzItDbContextTests
+    public class WhozitEntitiesTests
     {
         [TestMethod]
-        public void WhoIzItDbContextTest()
+        public void WhozitEntitiesTest()
         {
-            var dbContext = new WhoIzItDbContext();
+            var dbContext = new WhozitEntities();
             var count = dbContext.Badges.Count();
 
 

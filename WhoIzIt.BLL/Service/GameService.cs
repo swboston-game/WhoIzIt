@@ -9,11 +9,11 @@ namespace WhoIzIt.BLL.Service
     public class GameService : IGameService
     {
         //TODO: do some dependency injections (maybe for beta)
-        private readonly IWhoIzItDbContext _context = null;
+        private readonly WhozitEntities _context = null;
         private readonly INotificationService _notificationService = null;
         private readonly IGamePiecesService _gamePiecesService = null;
 
-        public GameService(IWhoIzItDbContext context, INotificationService notificationService, IGamePiecesService gamePieceService)
+        public GameService(WhozitEntities context, INotificationService notificationService, IGamePiecesService gamePieceService)
         {
             _context = context;
             _notificationService = notificationService;
@@ -22,41 +22,20 @@ namespace WhoIzIt.BLL.Service
 
         public void Invite(int challengerId, int opponentId)
         {
-            var invite = new Invite
-                             {
-                                 Challenger = { Id = challengerId },
-                                 Opponent = { Id = opponentId },
-                                 Status = InviteStatus.Waiting
-                             };
-            _context.Invites.Add(invite);
-            _context.SaveChanges();
-            _notificationService.Invite(invite.Id);
+     
         }
 
         public Game AcceptInvite(int challengerId, int opponentId)
         {
-            var invite =
-                _context.Invites.Single(
-                    i =>
-                    i.Challenger.Id == challengerId && i.Opponent.Id == opponentId && i.Status == InviteStatus.Waiting);
-            invite.Status = InviteStatus.Accepted;
-            invite.UpdatedOn = DateTime.Now;
-            _context.SaveChanges();
-            _notificationService.InviteAccepted(challengerId);
-            var game = CreateGame(invite.Challenger, invite.Opponent);
+            var challenger = _context.Players.First(p => p.Id == challengerId);
+            var opponent = _context.Players.First(p => p.Id == opponentId);
+            var game = CreateGame(challenger, opponent);
             return game;
         }
 
         public void DeclineInvite(int challengerId, int opponentId)
         {
-            var invite =
-                _context.Invites.Single(
-                    i =>
-                    i.Challenger.Id == challengerId && i.Opponent.Id == opponentId && i.Status == InviteStatus.Waiting);
-            invite.Status = InviteStatus.Declined;
-            invite.UpdatedOn = DateTime.Now;
-            _context.SaveChanges();
-            _notificationService.InviteDeclined(challengerId);
+
         }
 
         public Game CreateGame(Player challenger, Player opponent)
@@ -65,10 +44,9 @@ namespace WhoIzIt.BLL.Service
                            {
                                Challenger = challenger,
                                Opponent = opponent,
-                               Status = GameStatus.SettingUp,
-                               GamePieces = _gamePiecesService.GenerateGamePieces(challenger.Id, opponent.Id)
+                               GameStatus = _context.GameStatus1.First(s => s.Status == "Create"),
                            };
-            _context.Games.Add(game);
+            _context.Games.Attach(game);
             _context.SaveChanges();
             return game;
         }
@@ -78,15 +56,15 @@ namespace WhoIzIt.BLL.Service
             var game = _context.Games.Single(g => g.Id == gameId);
             if (game.Challenger.Id == playerId)
             {
-                game.ChallengerSelection.Id = gamePieceId;
+                game.ChallengerPiece.Id = gamePieceId;
             }
             else
             {
-                game.OpponenetSelection.Id = gamePieceId;
+                game.OpponentsPiece.Id = gamePieceId;
             }
-            if (game.ChallengerSelection != null && game.OpponenetSelection != null)
+            if (game.ChallengerPiece != null && game.OpponentsPiece != null)
             {
-                game.Status = GameStatus.InProgress;
+                game.GameStatus.Status = "InProgress";
                 game.PlayersMove = game.Opponent;
             }
             game.UpdatedOn = DateTime.Now;
@@ -95,18 +73,16 @@ namespace WhoIzIt.BLL.Service
 
         public void AskQuestion(int gameId, int playerId, string questionText)
         {
-            var question = new Question { QuestionText = questionText, Status = QuestionStatus.UnAnswered };
+            var question = new Question { QuestionText = questionText};
             var game = _context.Games.Single(g => g.Id == gameId);
-            game.Questions.Add(question);
+            game.QuestionsAskeds.Add(question);
             _context.SaveChanges();
             _notificationService.QuestionAsked(question.Id);
         }
 
-        public void AnswerQuestion(int questionId, Answer answer)
+        public void AnswerQuestion(int questionId, string answer)
         {
             var question = _context.Questions.Single(q => q.Id == questionId);
-            question.Answer = answer;
-            question.Status = QuestionStatus.Answered;
             question.UpdatedOn = DateTime.Now;
             _context.SaveChanges();
             _notificationService.QuestionAnswered(questionId);
@@ -118,7 +94,7 @@ namespace WhoIzIt.BLL.Service
             var won = false;
             if (game.Opponent.Id == playerId)
             {
-                if (game.ChallengerSelection.Id == gamePieceId)
+                if (game.ChallengerPiece.Id == gamePieceId)
                 {
                     game.Winner = game.Opponent;
                     won = true;
@@ -127,27 +103,27 @@ namespace WhoIzIt.BLL.Service
             }
             else
             {
-                if (game.OpponenetSelection.Id == gamePieceId)
+                if (game.OpponentsPiece.Id == gamePieceId)
                 {
                     game.Winner = game.Challenger;
-                    game.Status = GameStatus.Completed;
+                    game.GameStatus.Status ="Completed";
                     won = true;
                 }
                 game.Winner = game.Opponent;
             }
-            game.Status = GameStatus.Completed;
+            game.GameStatus.Status = "Completed";
             game.UpdatedOn = DateTime.Now;
             _context.SaveChanges();
             _notificationService.GameOver(gameId);
             return won;
         }
 
-        public IEnumerable<Friend> GetFriends(string id)
+        public IEnumerable<Friend> GetFriends(long id)
         {
             return null;
         }
 
-        public IEnumerable<Game> GetGames(string id)
+        public IEnumerable<Game> GetGames(long id)
         {
             return _context.Games.Where(g => g.Opponent.FaceBookId == id || g.Challenger.FaceBookId == id).AsEnumerable();
         }

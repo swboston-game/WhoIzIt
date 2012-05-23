@@ -10,9 +10,9 @@ namespace WhoIzIt.BLL.Service
 {
     public class PlayerService
     {
-        readonly WhoIzItDbContext _context = new WhoIzItDbContext();
+        readonly WhozitEntities _context = new WhozitEntities();
 
-        public void CreatePlayer(string email, string displayName, string faceBookId)
+        public void CreatePlayer(string email, string displayName, long faceBookId)
         {
             var player = new Player
             {
@@ -21,7 +21,7 @@ namespace WhoIzIt.BLL.Service
                 FaceBookId = faceBookId
             };
             player.TotalPoints += 1000;
-            _context.Players.Add(player);
+            _context.Players.Attach(player);
             _context.SaveChanges();
         }
 
