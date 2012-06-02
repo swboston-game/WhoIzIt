@@ -2,7 +2,7 @@
     <script type="text/javascript">
         var webApiUrl = '@ViewBag.WebApiUrl';
         var viewModel;
-        function viewModel() {
+        function AppViewModel() {
             var self = this;
 
             self.accessToken = ko.observable('');
@@ -10,33 +10,32 @@
             self.friends = ko.observableArray([]);
             self.games = ko.observableArray([]);
             self.leaderBoard = ko.observableArray([]);
-            self.leaderBoardLoading = ko.observable(false);
+            self.leaderBoardLoading = ko.observable(true);
             self.isBusy = ko.observable(true);
         }
 
         var initialize = function (uid, accessToken) {
-            viewModel = new viewModel();
             viewModel.accessToken = ko.observable(accessToken);
             viewModel.userId = ko.observable(uid);
             $.ajax({
                 url: webApiUrl + '/game?facebookId=' + uid + '&token=' + accessToken
                 }).done(function (data) {
-                    viewModel.friends(ko.mapping.fromJS(data)());
+                    viewModel.friends(ko.mapping.fromJS(data))
                 }).fail(function(jqXHR, textStatus) {
-                    alert("failed"); //TODO: do something
+                    //alert("failed"); //TODO: do something
                 });
             
-            viewModel.leaderBoardLoading = ko.observable(true);
+            viewModel.leaderBoardLoading(true);
             $.ajax({
                     url: webApiUrl + '/leaderboard'
                 }).done(function (data) {
-                    viewModel.leaderBoard(ko.mapping.fromJS(data)());
-                    viewModel.leaderBoardLoading = ko.observable(false);        
-                }).fail(functionjqXHR, textStatus) {
-                    alert("failed"); //TODO: do something
+                    viewModel.leaderBoard(ko.mapping.fromJS(data));
+                    viewModel.leaderBoardLoading(false);  
+                }).fail(function(jqXHR, textStatus) {
+                    //alert("failed"); //TODO: do something
                 });
 
-            ko.applyBindings(viewModel);
+            viewModel.isBusy(false); //TODO: this should only be changed when ready!
         }
 
         window.fbAsyncInit = function () {
@@ -69,7 +68,8 @@
             ref.parentNode.insertBefore(js, ref);
         } (document));
 
-        $(function () {
+        $(document).ready(function () {
+            
             $("#aFriend").click(function () {
                 $.ajax({
                         url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
@@ -78,12 +78,16 @@
                         viewModel.Friends(ko.mapping.fromJS(data)());
                     });
             });
+            viewModel = new AppViewModel();
+            ko.applyBindings(viewModel);
         });
+
+        
     </script>
 }
 
 <div id="maincontent">
-    <div id="splash" class="content-wrapper" data-bind="visible: isBusy">
+    <div id="splash" class="content-wrapper" data-bind="visible: isBusy()">
         <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
     </div>
     @*<div id="newuser" class="hidden">
@@ -109,8 +113,31 @@
             <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
         </div>
     </div>*@
-    <div id="board" class="hidden">
-       <div id="leftmenu" class="float-left">hello
+    <div id="board" data-bind="visible: !isBusy()">
+        <div id="leftmenu" class="float-left">
+            <div id="leaderboard">
+                <div class="loading" data-bind="visible: leaderBoardLoading()">
+                    Loading...
+                </div>
+                <div data-bind="visible: !leaderBoardLoading()">
+                    &nbsp;Leader Board
+                    <ul data-bind=" foreach: leaderBoard">
+                        <li>
+                            <img src="~/Images/player.png" alt="player" style="float: left;" />
+                            <div style="margin-left: 50px;">
+                                points: <span data-bind="text: points"></span><br />
+                                level <span data-bind="text: level"></span>
+                            </div>
+                            <div style="clear: both;"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div style="clear: both; height: 20px;"></div>
+            <div id="newgame">
+                <a href="#_self" class="rounded-link">new game</a>
+            </div>
+            <div id="curentgames"></div>
         </div>
         <div id="content">
             <table id="friendboard">
