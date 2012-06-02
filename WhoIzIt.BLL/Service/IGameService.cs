@@ -6,11 +6,13 @@ namespace WhoIzIt.BLL.Service
 {
     public interface IGameService
     {
-        void Invite(int challengerId, int opponentId);
+        void Invite(long challengerId, long opponentId);
 
-        Game AcceptInvite(int challengerId, int opponentId);
+        bool InviteRandomOpponent(long challengetId);
 
-        void DeclineInvite(int challengerId, int opponentId);
+        Game AcceptInvite(long challengerId, long opponentId);
+
+        void DeclineInvite(long challengerId, long opponentId);
 
         Game CreateGame(Player challenger, Player opponent);
 

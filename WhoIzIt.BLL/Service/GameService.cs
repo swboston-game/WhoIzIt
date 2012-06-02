@@ -20,12 +20,30 @@ namespace WhoIzIt.BLL.Service
             _gamePiecesService = gamePieceService;
         }
 
-        public void Invite(int challengerId, int opponentId)
+        public void Invite(long challengerId, long opponentId)
         {
-     
+            //TODO: do the actual invite!
         }
 
-        public Game AcceptInvite(int challengerId, int opponentId)
+        public bool InviteRandomOpponent(long challengerId)
+        {
+            var qry = _context.Players.Select(p => p.FaceBookId); //TODO: only get the online ones
+            int count = qry.Count();
+            if (count == 0)
+                return false;
+
+            int index = new Random().Next(count);
+            var opponentId = qry.Skip(index).FirstOrDefault();
+
+            if (!opponentId.HasValue)
+                return false;
+
+            Invite(challengerId, opponentId.Value);
+
+            return true;
+        }
+
+        public Game AcceptInvite(long challengerId, long opponentId)
         {
             var challenger = _context.Players.First(p => p.Id == challengerId);
             var opponent = _context.Players.First(p => p.Id == opponentId);
@@ -33,7 +51,7 @@ namespace WhoIzIt.BLL.Service
             return game;
         }
 
-        public void DeclineInvite(int challengerId, int opponentId)
+        public void DeclineInvite(long challengerId, long opponentId)
         {
 
         }
@@ -73,7 +91,7 @@ namespace WhoIzIt.BLL.Service
 
         public void AskQuestion(int gameId, int playerId, string questionText)
         {
-            var question = new Question { QuestionText = questionText};
+            var question = new Question { QuestionText = questionText };
             var game = _context.Games.Single(g => g.Id == gameId);
             game.QuestionsAskeds.Add(question);
             _context.SaveChanges();
@@ -106,7 +124,7 @@ namespace WhoIzIt.BLL.Service
                 if (game.OpponentsPiece.Id == gamePieceId)
                 {
                     game.Winner = game.Challenger;
-                    game.GameStatus.Status ="Completed";
+                    game.GameStatus.Status = "Completed";
                     won = true;
                 }
                 game.Winner = game.Opponent;

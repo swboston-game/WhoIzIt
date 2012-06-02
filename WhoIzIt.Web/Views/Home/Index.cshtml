@@ -12,6 +12,35 @@
             self.leaderBoard = ko.observableArray([]);
             self.leaderBoardLoading = ko.observable(true);
             self.isBusy = ko.observable(true);
+            self.startRandomGame = function () {
+                $.ajax({
+                    url: webApiUrl + '/game?facebookId=' + self.userId() + '&token=' + self.accessToken(),
+                    type: "POST"
+                }).done(function (data) {
+                    alert(data);
+                }).fail(function(jqXHR, textStatus) {
+                    if (jqXHR.status == 404) {
+                        //no opponent was found! Show message
+                        $.blockUI({ message: "<h1>No opponent was found</h1>Please try again in a few moments" }); 
+                        $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+                    }
+                    else {
+                        //something else happened
+                        //TODO: show error with toast notification
+                    }
+                });
+            }
+            self.getFriends = function () {
+                //TODO: show loading
+                $.ajax({
+                    url: "@ViewBag.WebApiUrl/friends?facebookId=" + self.userId() + "&token=" + self.accessToken()
+                }).done(function (data) {
+                    //TODO: hide loading
+                    self.friends(ko.mapping.fromJS(data)());
+                }).fail(function (jqXHR, textStatus) {
+                    //TODO: hide loading
+                });
+            }
         }
 
         var initialize = function (uid, accessToken) {
@@ -70,13 +99,25 @@
 
         $(document).ready(function () {
             
-            $("#aFriend").click(function () {
-                $.ajax({
-                        url: "@ViewBag.WebApiUrl/friends?facebookId=" + uid + "&token=" + accessToken,
-                    }).done(function (data) {
-                        $("#friend-list").show();
-                        viewModel.Friends(ko.mapping.fromJS(data)());
-                    });
+            $("#newGame").click(function () {
+                $.blockUI({ 
+                    message: $('#newGameDialog'), 
+                    css: { 
+                        top:  ($(window).height() - 400) /2 + 'px', 
+                        left: ($(window).width() - 400) /2 + 'px', 
+                        width: '400px'} 
+                });
+                $('.blockOverlay').attr('title','Click to unblock').click($.unblockUI);
+            });
+            $("#newGameFriend").click(function () {
+                $.blockUI({
+                    message: $('#newGameFriendDialog'), 
+                    css: {
+                        top: ($(window).height() - 400) / 2 + 'px',
+                        left: ($(window).width() - 400) / 2 + 'px',
+                        width: '400px' }
+                });
+                $('.blockOverlay').attr('title', 'Click to unblock').click($.unblockUI);
             });
             viewModel = new AppViewModel();
             ko.applyBindings(viewModel);
@@ -90,29 +131,15 @@
     <div id="splash" class="content-wrapper" data-bind="visible: isBusy()">
         <img src="@Url.Content("~/Images/splash.jpg")" alt="WhoIzIt?" width="467" height="400" />
     </div>
-    @*<div id="newuser" class="hidden">
-        <hgroup class="title">
-            <h1>WhoIzIt?</h1>
-            <h2>Guess who...</h2>
-        </hgroup>
-
-        <article>
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin luctus tincidunt justo nec tempor. 
-                Aliquam erat volutpat. Fusce facilisis ullamcorper consequat. Vestibulum non sapien lectus. Nam 
-                mi augue, posuere at tempus vel, dignissim vitae nulla. Nullam at quam eu sapien mattis ultrices. 
-                Quisque quis leo mi, at lobortis dolor. Nullam scelerisque facilisis placerat. Fusce a augue 
-                erat, malesuada euismod dui. Duis iaculis risus id felis volutpat elementum. Fusce blandit iaculis 
-                quam a cursus. Cras varius tincidunt cursus. Morbi justo eros, adipiscing ac placerat sed, posuere 
-                et mi. Suspendisse vulputate viverra aliquet. Duis non enim a nibh consequat mollis ac tempor 
-                lorem. Phasellus elit leo, semper eu luctus et, suscipit at lacus. In hac habitasse platea 
-                dictumst. Duis dignissim justo sit amet nulla pulvinar sodales.
-            </p>
-        </article>
-        <div id="start">
-            <a href="@ViewBag.AuthUrl" target="_top">Start Playing</a>
-        </div>
-    </div>*@
+    <div id="newGameDialog" class="dialog hidden">
+        <a href="#_self" class="rounded-link" data-bind="click: startRandomGame">Random Person</a><br /><br />
+        <a href="#_self" id="newGameFriend" class="rounded-link" data-bind="click: getFriends">With a Friend</a>
+    </div>
+    <div id="newGameFriendDialog" class="dialog hidden" data-bind="foreach: friends">
+        <img data-bind="attr: {src: PicUrl} " alt="" src="" />
+        <span data-bind="text: Name"></span>
+        <span data-bind="text: Status"></span><br />
+    </div>
     <div id="board" data-bind="visible: !isBusy()">
         <div id="leftmenu" class="float-left">
             <div id="leaderboard">
@@ -135,7 +162,7 @@
             </div>
             <div style="clear: both; height: 20px;"></div>
             <div id="newgame">
-                <a href="#_self" class="rounded-link">new game</a>
+                <a href="#_self" id="newGame" class="rounded-link">new game</a>
             </div>
             <div id="curentgames"></div>
         </div>
@@ -166,8 +193,4 @@
         <a href="#_self" id="aFriend">Play with friend</a><br />
         <a href="">Play with random person</a>
     </div>
-    <div id="friend-list" class="hidden" data-bind="foreach: Friends">
-        <img data-bind="attr: {src: PicUrl} " alt="" src="" />
-        <span data-bind="text: Name"></span>
-        <span data-bind="text: Status"></span><br />
-    </div>*@
+    *@

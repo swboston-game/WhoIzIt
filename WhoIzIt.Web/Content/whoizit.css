@@ -92,6 +92,28 @@ ul.menu li a:hover {
     width: 175px;
 }
 
+#newGameDialog
+{
+    vertical-align: middle;
+    height: 150px;
+    margin: 0 auto;
+    padding-left: 3px;
+    padding-top: 30px;
+}
+
+#newGameDialog .rounded-link
+{
+    text-decoration: none;
+    display: inline-block;
+    border: 1px solid #000;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -khtml-border-radius: 10px;
+    border-radius: 10px;
+    width: 200px;
+    text-align: center;
+}
+
 #newgame .rounded-link {
     text-decoration: none;
     display: inline-block;
@@ -103,6 +125,13 @@ ul.menu li a:hover {
     width: 100%;
     text-align: center;
     padding-right: 10px;
+}
+
+#newGameFriendDialog
+{
+    height: 300px;
+    overflow: auto;
+    text-align: left;
 }
 
 #leaderboard
@@ -137,7 +166,10 @@ ul.menu li a:hover {
     padding: 0;
 }
 
-
+.dialog
+{
+    cursor: default;
+}
 
 #logo
 {
@@ -165,7 +197,7 @@ ul.menu li a:hover {
     visibility: hidden;
 }
 
-#splash 
+#content-wrapper 
 {
     text-align: center;
 }
@@ -242,11 +274,4 @@ a.twitter {
 .hidden
 {
     display: none;
-}
-
-#friend-list
-{
-    height: 300px;
-    width: 250px;
-    overflow: auto;
 }
